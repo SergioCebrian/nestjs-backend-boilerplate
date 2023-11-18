@@ -66,6 +66,6 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 Nest is [MIT licensed](LICENSE).
 
-## PLUGINS
+## Plugins
 
 [NestJS Paginate](https://www.npmjs.com/package/nestjs-paginate)
