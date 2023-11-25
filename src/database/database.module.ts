@@ -19,6 +19,10 @@ import databaseConfig from '@database/config/database.config';
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
+        GOOGLE_AUTH_CLIENT_ID: configService.get('GOOGLE_AUTH_CLIENT_ID'),
+        GOOGLE_AUTH_CLIENT_SECRET: configService.get(
+          'GOOGLE_AUTH_CLIENT_SECRET',
+        ),
         autoLoadEntities: true,
         logging: Boolean(configService.get('DB_LOG')),
         synchronize: Boolean(configService.get('DB_SYNC')),

@@ -7,6 +7,8 @@ export default registerAs('database', () => ({
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
+  GOOGLE_AUTH_CLIENT_ID: process.env.GOOGLE_AUTH_CLIENT_ID,
+  GOOGLE_AUTH_CLIENT_SECRET: process.env.GOOGLE_AUTH_CLIENT_SECRET,
   autoLoadEntities: true,
   // entities: [__dirname + '/../**/*.entity{.ts,.js}'],
   logging: Boolean(process.env.DB_LOG),

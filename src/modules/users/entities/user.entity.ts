@@ -30,7 +30,7 @@ export class User extends AbstractEntity {
 
   @OneToOne(() => Role)
   @JoinColumn({ name: 'role_id' })
-  public role: number | any;
+  public role: number;
   */
 
   constructor(partial: Partial<User>) {
