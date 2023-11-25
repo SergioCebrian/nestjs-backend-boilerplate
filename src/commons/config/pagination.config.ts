@@ -1,8 +1,4 @@
-import {
-  PaginateConfig,
-  PaginationType,
-  FilterOperator,
-} from 'nestjs-paginate';
+import { PaginateConfig, PaginationType } from 'nestjs-paginate';
 
 export const PAGINATION_CONFIG: PaginateConfig<any> = {
   /**
@@ -10,7 +6,7 @@ export const PAGINATION_CONFIG: PaginateConfig<any> = {
    * Type: (keyof CatEntity)[]
    * Description: These are the columns that are valid to be sorted by.
    */
-  sortableColumns: ['uuid', 'name'],
+  sortableColumns: ['email', 'name'],
 
   /**
    * Required: false
@@ -30,24 +26,6 @@ export const PAGINATION_CONFIG: PaginateConfig<any> = {
 
   /**
    * Required: false
-   * Type: (keyof CatEntity)[]
-   * Description: These columns will be searched through when using the search query
-   * param. Limit search scope further by using `searchBy` query param.
-   */
-  searchableColumns: ['name', 'color'],
-
-  /**
-   * Required: false
-   * Type: (keyof CatEntity)[]
-   * Default: None
-   * Description: TypeORM partial selection. Limit selection further by using `select` query param.
-   * https://typeorm.io/select-query-builder#partial-selection
-   * Note: You must include the primary key in the selection.
-   */
-  select: ['id', 'name', 'color'],
-
-  /**
-   * Required: false
    * Type: number
    * Default: 100
    * Description: The maximum amount of entities to return per page.
@@ -60,30 +38,7 @@ export const PAGINATION_CONFIG: PaginateConfig<any> = {
    * Type: number
    * Default: 20
    */
-  defaultLimit: 50,
-
-  /**
-   * Required: false
-   * Type: TypeORM find options
-   * Default: None
-   * https://typeorm.io/#/find-optionsfind-options.md
-   */
-  where: { color: 'ginger' },
-
-  /**
-   * Required: false
-   * Type: { [key in CatEntity]?: FilterOperator[] } - Operators based on TypeORM find operators
-   * Default: None
-   * https://typeorm.io/#/find-options/advanced-options
-   */
-  filterableColumns: { age: [FilterOperator.EQ, FilterOperator.IN] },
-
-  /**
-   * Required: false
-   * Type: RelationColumn<CatEntity>
-   * Description: Indicates what relations of entity should be loaded.
-   */
-  relations: [],
+  defaultLimit: 10,
 
   /**
    * Required: false
@@ -111,21 +66,6 @@ export const PAGINATION_CONFIG: PaginateConfig<any> = {
    * However, using limit/offset can cause problems with relations.
    */
   paginationType: PaginationType.LIMIT_AND_OFFSET,
-
-  /**
-   * Required: false
-   * Type: boolean
-   * Default: false
-   * Description: Generate relative paths in the resource links.
-   */
-  relativePath: true,
-
-  /**
-   * Required: false
-   * Type: string
-   * Description: Overrides the origin of absolute resource links if set.
-   */
-  origin: 'http://cats.example',
 
   /**
    * Required: false

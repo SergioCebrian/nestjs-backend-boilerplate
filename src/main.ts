@@ -9,8 +9,8 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const config = new DocumentBuilder()
-    .setTitle('Improve your English')
-    .setDescription('Improve your English API')
+    .setTitle('NestJS Backend Boilerplate')
+    .setDescription('NestJS Backend Boilerplate API')
     .setContact(
       'Sergio Cebrián',
       'https://github.com/SergioCebrian',
@@ -18,7 +18,7 @@ async function bootstrap() {
     )
     .setVersion('1.0')
     .addBearerAuth()
-    .addTag('improve-your-english')
+    .addTag('nestjs-backend-boilerplate')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

@@ -13,7 +13,8 @@ import {
   MinLength,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { RoleEnum } from 'src/roles/role.enum';
+import { Transform } from 'class-transformer';
+import { RoleEnum } from '@roles/role.enum';
 
 export class CreateUserDto {
   @ApiProperty({
@@ -21,7 +22,9 @@ export class CreateUserDto {
     default: 'testName',
     description: 'Name of the user',
     minLength: 3,
+    required: true,
   })
+  @Transform(({ value }) => value.trim())
   @IsString()
   @IsNotEmpty()
   @MinLength(3)
@@ -39,9 +42,11 @@ export class CreateUserDto {
     description: 'User password',
     minLength: 8,
     maxLength: 15,
+    required: true,
   })
   @IsString()
   @IsNotEmpty()
+  @Transform(({ value }) => value.trim())
   @MinLength(8, { message: 'Password must be at least 8 characters long' })
   @MaxLength(15, { message: 'Password cannot be longer than 15 characters' })
   @Matches(
@@ -58,6 +63,7 @@ export class CreateUserDto {
     default: 'es',
     description: 'Country of the user',
     minLength: 1,
+    required: true,
   })
   @IsString()
   @IsNotEmpty()
@@ -71,13 +77,14 @@ export class CreateUserDto {
   })
   @IsBoolean()
   @IsBooleanString()
-  premium: boolean = false;
+  premium: boolean;
 
   @ApiProperty({
     type: Number,
     default: 1,
     description:
       'Current level of the user (1 for beginner, 2 for intermediate, 3 for advanced)',
+    required: true,
   })
   @IsNotEmpty()
   @IsInt()
@@ -89,6 +96,7 @@ export class CreateUserDto {
     default: 2,
     enum: RoleEnum,
     description: 'Current role of the user (1 for admin, 2 for user)',
+    required: true,
   })
   @IsNotEmpty()
   @IsInt()
@@ -97,32 +105,4 @@ export class CreateUserDto {
     message: 'Invalid role. Valid roles are: 1 for admin, 2 for user',
   })
   role: number;
-
-  /*
-  @ApiProperty({
-    type: Number,
-    default: 1,
-    description:
-      'Current level of the user (1 for beginner, 2 for intermediate, 3 for advanced)',
-    enum: LevelConstants,
-  })
-  @IsNotEmpty()
-  @IsInt()
-  @IsIn(LevelConstants, { message: 'Current level must be 1, 2, or 3' })
-  @IsNumber()
-  level: number;
-
-  @ApiProperty({
-    type: Number,
-    default: 4,
-    description:
-      'Current role of the user (1 for gold, 2 for silver, 3 for bronze, 4 for none)',
-    enum: RoleConstants,
-  })
-  @IsNotEmpty()
-  @IsInt()
-  @IsIn(RoleConstants, { message: 'Current role must be 1, 2, 3 or 4' })
-  @IsNumber()
-  role: number;
-  */
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   FindOneOptions,
@@ -26,7 +26,11 @@ export class UsersService {
     private userRepository: Repository<User>,
   ) {}
 
-  create(createUserDto: CreateUserDto | any) {
+  async create(createUserDto: CreateUserDto) {
+    const user = await this.findOneByEmail(createUserDto.email);
+    if (user) {
+      throw new BadRequestException('User already exists.');
+    }
     const password = encodePassword(createUserDto.password);
     const newUser = this.userRepository.create({ ...createUserDto, password });
     return this.userRepository.save(newUser);
@@ -34,14 +38,12 @@ export class UsersService {
 
   findAll(query: PaginateQuery): Promise<Paginated<User>> {
     return paginate(query, this.userRepository, {
-      sortableColumns: ['uuid', 'name'],
-      nullSort: 'last',
-      defaultSortBy: [['uuid', 'DESC']],
+      sortableColumns: ['name'],
+      defaultSortBy: [['name', 'DESC']],
       searchableColumns: ['email', 'name'],
-      select: ['uuid', 'name'],
+      select: ['uuid', 'name', 'email'],
       filterableColumns: {
         name: [FilterOperator.EQ, FilterSuffix.NOT],
-        age: true,
       },
     });
     /*
@@ -85,7 +87,7 @@ export class UsersService {
   findByEmailWithPassword(email: string): Promise<User> {
     return this.userRepository.findOne({
       where: { email },
-      select: ['id', 'name', 'email', 'password'],
+      select: ['uuid', 'name', 'email', 'password'],
     });
   }
 }
