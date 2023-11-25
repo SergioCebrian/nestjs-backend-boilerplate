@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import helmet from 'helmet';
 import * as compression from 'compression';
+import * as cookieParser from 'cookie-parser';
 
 import { HttpExceptionFilter } from '@filters/http-exception.filter';
 import { AppModule } from './app.module';
@@ -25,6 +26,7 @@ async function bootstrap() {
 
   app.enableCors();
   app.use(compression());
+  app.use(cookieParser());
   app.use(helmet());
   app.useGlobalFilters(new HttpExceptionFilter());
 

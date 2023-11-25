@@ -5,8 +5,8 @@ import { CreateUserDto } from '@modules/users/dto/create-user.dto';
 import { User } from '@modules/users/entities/user.entity';
 import { UsersService } from '@modules/users/users.service';
 import { AuthService } from './auth.service';
-import { LoginDto } from './dto/login.dto';
-import { LoginSuccessDto } from './dto/login-success.dto';
+import { LoginDto } from '../dto/login.dto';
+import { LoginSuccessDto } from '../dto/login-success.dto';
 
 @ApiTags('auth')
 @Controller('auth')
