@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Controller,
+  Delete,
   FileTypeValidator,
   MaxFileSizeValidator,
   Param,
@@ -8,6 +9,7 @@ import {
   Post,
   UploadedFile,
   UseInterceptors,
+  UseGuards,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
@@ -16,17 +18,22 @@ import {
   ApiBearerAuth,
   ApiTags,
   ApiResponse,
+  ApiOkResponse,
+  ApiParam,
 } from '@nestjs/swagger';
 import { diskStorage } from 'multer';
 import { UploadErrorDto } from './dto/upload-error.dto';
 import { UploadService } from './upload.service';
+import { CreateUserDto } from '@modules/users/dto/create-user.dto';
+import { AuthGuard } from '@auth/guard/auth.guard';
 
-@ApiTags('upload')
+@ApiTags('Media')
 @Controller('photo')
 export class UploadController {
   constructor(private uploadService: UploadService) {}
 
-  @Post()
+  @Post(':uuid')
+  @UseGuards(AuthGuard)
   @ApiBearerAuth()
   @UseInterceptors(
     FileInterceptor('file', {
@@ -51,6 +58,11 @@ export class UploadController {
   })
   @ApiConsumes('multipart/form-data')
   @ApiResponse({ status: 413, type: UploadErrorDto })
+  @ApiOkResponse({
+    status: 200,
+    description: 'Get the user data with photo uploaded',
+    type: CreateUserDto,
+  })
   async uploadFile(
     @Param('uuid') uuid: string,
     @UploadedFile(
@@ -66,6 +78,22 @@ export class UploadController {
     if (!file) {
       throw new BadRequestException('You must upload a file.');
     }
-    return await this.uploadService.update(uuid, file);
+    return await this.uploadService.update(uuid, file.originalname);
+  }
+
+  @Delete(':uuid')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  @ApiParam({
+    name: 'uuid',
+    description: 'Add the User UUID',
+  })
+  @ApiOkResponse({
+    status: 200,
+    description: 'Get the user data without photo deleted',
+    type: CreateUserDto,
+  })
+  async remove(@Param('uuid') uuid: string): Promise<void> {
+    return await this.uploadService.remove(uuid);
   }
 }

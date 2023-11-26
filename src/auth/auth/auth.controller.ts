@@ -8,7 +8,7 @@ import { AuthService } from './auth.service';
 import { LoginDto } from '../dto/login.dto';
 import { LoginSuccessDto } from '../dto/login-success.dto';
 
-@ApiTags('auth')
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -35,6 +35,13 @@ export class AuthController {
   login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
   }
+
+  /*
+  @Get('logout')
+  logout(@Req() req: Request): void {
+    this.authService.logout(req.user['sub']);
+  }
+  */
 
   /*
   @Get('profile')

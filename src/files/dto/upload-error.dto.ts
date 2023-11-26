@@ -17,7 +17,7 @@ export class UploadErrorDto {
   path: string;
 
   @ApiProperty({
-    example: 'File too many big',
+    example: 'File too large',
   })
   message: string;
 }

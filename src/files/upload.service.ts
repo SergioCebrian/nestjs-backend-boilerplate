@@ -1,32 +1,33 @@
 import { Injectable } from '@nestjs/common';
-//import { InjectRepository } from '@nestjs/typeorm';
-//import { Repository } from 'typeorm';
-//import { User } from '@modules/users/entities/user.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
+import { User } from '@modules/users/entities/user.entity';
 
 @Injectable()
 export class UploadService {
-  constructor() {}
-  /*
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
   ) {}
-  */
 
-  async update(uuid: string, file: Express.Multer.File): Promise<any> {
+  async update(uuid: string, file: string): Promise<any> {
     console.log(uuid, file);
-    /*
-    const photo = await this.userRepository.findOne({ where: { uuid } });
-    if (!photo) {
-      return 'Foto no encontrada';
+    const user = await this.userRepository.findOne({ where: { uuid } });
+    if (!user) {
+      return 'User not found';
     }
+    user.photo = file;
+    await this.userRepository.save(user);
+    return { user };
+  }
 
-    // Actualizar el campo 'photo' con los nuevos datos
-    photo.photo = file;
-
-    // Guardar los cambios en la base de datos
-    await this.userRepository.save(photo);
-    return 'Foto actualizada correctamente';
-    */
+  async remove(uuid: FindOptionsWhere<User> | any): Promise<any> {
+    const user = await this.userRepository.findOne({ where: { uuid } });
+    if (!user) {
+      return 'User not found';
+    }
+    user.photo = null;
+    await this.userRepository.save(user);
+    return { user };
   }
 }

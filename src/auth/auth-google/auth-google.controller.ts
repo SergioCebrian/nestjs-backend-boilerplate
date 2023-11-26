@@ -14,7 +14,7 @@ import { CheckTokenExpiryGuard } from './auth-google.guard';
 import { API_URL } from '@commons/config/api.config';
 import { ApiTags } from '@nestjs/swagger';
 
-@ApiTags('auth Google')
+@ApiTags('Auth Google')
 @Controller('auth-google')
 export class AuthGoogleController {
   constructor(private readonly authGoogleService: AuthGoogleService) {}
