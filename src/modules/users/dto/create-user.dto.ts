@@ -80,6 +80,13 @@ export class CreateUserDto {
   premium: boolean;
 
   @ApiProperty({
+    type: String,
+    description: 'Photo of the user',
+    default: null,
+  })
+  photo: string | null;
+
+  @ApiProperty({
     type: Number,
     default: 1,
     description:

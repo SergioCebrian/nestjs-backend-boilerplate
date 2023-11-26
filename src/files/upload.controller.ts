@@ -1,17 +1,31 @@
 import {
   BadRequestException,
   Controller,
+  FileTypeValidator,
+  MaxFileSizeValidator,
+  Param,
+  ParseFilePipe,
   Post,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiConsumes, ApiBody, ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import {
+  ApiConsumes,
+  ApiBody,
+  ApiBearerAuth,
+  ApiTags,
+  ApiResponse,
+} from '@nestjs/swagger';
 import { diskStorage } from 'multer';
+import { UploadErrorDto } from './dto/upload-error.dto';
+import { UploadService } from './upload.service';
 
 @ApiTags('upload')
-@Controller('upload')
+@Controller('photo')
 export class UploadController {
+  constructor(private uploadService: UploadService) {}
+
   @Post()
   @ApiBearerAuth()
   @UseInterceptors(
@@ -36,18 +50,22 @@ export class UploadController {
     },
   })
   @ApiConsumes('multipart/form-data')
-  uploadFile(@UploadedFile() file) {
+  @ApiResponse({ status: 413, type: UploadErrorDto })
+  async uploadFile(
+    @Param('uuid') uuid: string,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 1000000 }),
+          new FileTypeValidator({ fileType: '.(png|jpeg|jpg)' }),
+        ],
+      }),
+    )
+    file: Express.Multer.File,
+  ): Promise<any> {
     if (!file) {
       throw new BadRequestException('You must upload a file.');
     }
-    /*
-    const allowedExtensions = ['.jpg', '.png', '.pdf'];
-    const fileExtension = extname(file.originalname).toLowerCase();
-    if (!allowedExtensions.includes(fileExtension)) {
-      throw new BadRequestException('The file must be JPG, PNG o PDF.');
-    }
-    */
-    console.log(file);
-    return 'File has been uploaded successfully.';
+    return await this.uploadService.update(uuid, file);
   }
 }

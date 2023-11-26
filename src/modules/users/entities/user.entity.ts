@@ -20,6 +20,9 @@ export class User extends AbstractEntity {
   @Column()
   public premium: boolean;
 
+  @Column({ nullable: true })
+  public photo: string | null;
+
   @Column()
   public role: number;
 
