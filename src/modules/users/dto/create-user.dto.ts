@@ -15,6 +15,7 @@ import {
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { RoleEnum } from '@roles/role.enum';
+import { lowerCaseTransformer } from '@utils/transformers/lower-case.transformer';
 
 export class CreateUserDto {
   @ApiProperty({
@@ -33,6 +34,7 @@ export class CreateUserDto {
 
   @ApiProperty({ default: 'test@gmail.com' })
   @IsNotEmpty()
+  @Transform(lowerCaseTransformer)
   @IsEmail()
   email: string;
 

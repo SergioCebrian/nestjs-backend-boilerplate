@@ -22,6 +22,7 @@
       "@commons/*": ["src/commons/*"],
       "@database/*": ["src/database/*"],
       "@filters/*": ["src/filters/*"],
+      "@interfaces/*": ["src/interfaces/*"],
       "@modules/*": ["src/modules/*"],
       "@roles/*": ["src/roles/*"],
       "@utils/*": ["src/utils/*"],
