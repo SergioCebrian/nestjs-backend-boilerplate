@@ -6,6 +6,8 @@ import {
   Param,
   Delete,
   UseGuards,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import {
   ApiOkPaginatedResponse,
@@ -23,6 +25,7 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from '@auth/guard/auth.guard';
+import { UpdatePasswordDto } from './dto/update-password.dto';
 
 @ApiTags('Users')
 @Controller('user')
@@ -71,6 +74,21 @@ export class UsersController {
     @Body() updateUserDto: UpdateUserDto,
   ): Promise<UpdateResult> {
     return await this.usersService.update(uuid, updateUserDto);
+  }
+
+  @Patch(':uuid/update-password')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  @ApiParam({
+    name: 'uuid',
+    description: 'Add the User UUID',
+  })
+  @HttpCode(HttpStatus.OK)
+  async updatePassword(
+    @Param('uuid') uuid: string,
+    @Body() updatePassword: UpdatePasswordDto,
+  ): Promise<UpdateResult> {
+    return await this.usersService.updatePassword(uuid, updatePassword);
   }
 
   @Delete(':uuid')

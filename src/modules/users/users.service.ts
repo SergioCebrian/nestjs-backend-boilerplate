@@ -18,6 +18,7 @@ import { encodePassword } from '@utils/bcrypt/bcrypt.helper';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import { UpdatePasswordDto } from './dto/update-password.dto';
 
 @Injectable()
 export class UsersService {
@@ -26,7 +27,7 @@ export class UsersService {
     private userRepository: Repository<User>,
   ) {}
 
-  async create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto): Promise<User> {
     const user = await this.findOneByEmail(createUserDto.email);
     if (user) {
       throw new BadRequestException('User already exists.');
@@ -62,6 +63,18 @@ export class UsersService {
   update(uuid: string, updateUserDto: UpdateUserDto): Promise<UpdateResult> {
     const updateUser = this.userRepository.create(updateUserDto);
     return this.userRepository.update({ uuid }, updateUser);
+  }
+
+  updatePassword(
+    uuid: string,
+    updatePasswordDto: UpdatePasswordDto,
+  ): Promise<UpdateResult> {
+    const updateUser = this.userRepository.findOne({ where: { uuid } });
+    if (!updateUser) {
+      throw new BadRequestException('User doesn´t exists.');
+    }
+    const password = encodePassword(updatePasswordDto.password);
+    return this.userRepository.update({ uuid }, { password });
   }
 
   async remove(uuid: FindOptionsWhere<User> | any): Promise<void> {
