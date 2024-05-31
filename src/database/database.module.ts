@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import databaseConfig from '@database/config/database.config';
+import databaseConfig from './database.config';
 
 @Module({
   imports: [
@@ -13,16 +13,12 @@ import databaseConfig from '@database/config/database.config';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
-        type: 'mysql',
+        type: 'postgres',
         host: configService.get('DB_HOST'),
         port: +configService.get('DB_PORT'),
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
-        GOOGLE_AUTH_CLIENT_ID: configService.get('GOOGLE_AUTH_CLIENT_ID'),
-        GOOGLE_AUTH_CLIENT_SECRET: configService.get(
-          'GOOGLE_AUTH_CLIENT_SECRET',
-        ),
         autoLoadEntities: true,
         logging: Boolean(configService.get('DB_LOG')),
         synchronize: Boolean(configService.get('DB_SYNC')),

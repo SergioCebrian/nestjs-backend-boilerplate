@@ -25,6 +25,7 @@
       "@interfaces/*": ["src/interfaces/*"],
       "@modules/*": ["src/modules/*"],
       "@roles/*": ["src/roles/*"],
+      "@users/*": ["src/users/*"],
       "@utils/*": ["src/utils/*"],
     }
   }

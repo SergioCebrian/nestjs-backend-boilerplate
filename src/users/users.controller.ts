@@ -8,6 +8,7 @@ import {
   UseGuards,
   HttpCode,
   HttpStatus,
+  Post,
 } from '@nestjs/common';
 import {
   ApiOkPaginatedResponse,
@@ -26,11 +27,22 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from '@auth/guard/auth.guard';
 import { UpdatePasswordDto } from './dto/update-password.dto';
+import { CreateUserSuccessDto } from './dto/create-user-success.dto';
 
 @ApiTags('Users')
 @Controller('user')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
+
+  @ApiResponse({
+    status: 201,
+    description: 'A new user has been created.',
+    type: CreateUserSuccessDto,
+  })
+  @Post()
+  create(@Body() createUserDto: CreateUserDto) {
+    return this.usersService.create(createUserDto);
+  }
 
   @Get()
   @UseGuards(AuthGuard)

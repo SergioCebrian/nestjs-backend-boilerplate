@@ -24,7 +24,7 @@ import {
 import { diskStorage } from 'multer';
 import { UploadErrorDto } from './dto/upload-error.dto';
 import { UploadService } from './upload.service';
-import { CreateUserDto } from '@modules/users/dto/create-user.dto';
+import { CreateUserDto } from '@users/dto/create-user.dto';
 import { AuthGuard } from '@auth/guard/auth.guard';
 
 @ApiTags('Media')

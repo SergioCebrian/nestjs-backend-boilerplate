@@ -1,12 +1,13 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
-import { CreateUserDto } from '@modules/users/dto/create-user.dto';
-import { User } from '@modules/users/entities/user.entity';
-import { UsersService } from '@modules/users/users.service';
+import { CreateUserDto } from '@users/dto/create-user.dto';
+import { User } from '@users/entities/user.entity';
+import { UsersService } from '@users/users.service';
 import { AuthService } from './auth.service';
 import { LoginDto } from '../dto/login.dto';
 import { LoginSuccessDto } from '../dto/login-success.dto';
+import { CreateUserSuccessDto } from '@users/dto/create-user-success.dto';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -20,7 +21,7 @@ export class AuthController {
   @ApiResponse({
     status: 200,
     description: 'Get the new user data',
-    type: CreateUserDto,
+    type: CreateUserSuccessDto,
   })
   async create(@Body() createUserDto: CreateUserDto): Promise<User> {
     return await this.usersService.create(createUserDto);
