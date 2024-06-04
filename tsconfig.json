@@ -23,6 +23,7 @@
       "@database/*": ["src/database/*"],
       "@filters/*": ["src/filters/*"],
       "@interfaces/*": ["src/interfaces/*"],
+      "@mail/*": ["src/mail/*"],
       "@modules/*": ["src/modules/*"],
       "@roles/*": ["src/roles/*"],
       "@users/*": ["src/users/*"],

@@ -8,7 +8,6 @@ export default registerAs('databaseConfig', () => ({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   autoLoadEntities: true,
-  // entities: [__dirname + '/../**/*.entity{.ts,.js}'],
   logging: Boolean(process.env.DB_LOG),
   synchronize: Boolean(process.env.DB_SYNC),
 }));

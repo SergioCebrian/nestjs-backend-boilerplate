@@ -9,12 +9,18 @@ import { AuthModule } from '@auth/auth/auth.module';
 import { UploadModule } from './files/upload.module';
 
 @Module({
-  imports: [DatabaseModule, UsersModule, AuthModule, UploadModule, ThrottlerModule.forRoot([
-    {
-      ttl: 60000,
-      limit: 10,
-    },
-  ]),],
+  imports: [
+    DatabaseModule,
+    UsersModule,
+    AuthModule,
+    UploadModule,
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60000,
+        limit: 10,
+      },
+    ]),
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

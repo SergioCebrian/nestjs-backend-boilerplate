@@ -19,13 +19,19 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { UpdatePasswordDto } from './dto/update-password.dto';
+import { MailService } from '@mail/mail.service';
 
 @Injectable()
 export class UsersService {
   constructor(
+    private readonly mailService: MailService,
     @InjectRepository(User)
     private userRepository: Repository<User>,
   ) {}
+
+  async sendUserConfirmation(user: User): Promise<void> {
+    await this.mailService.sendUserConfirmation(user);
+  }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     const user = await this.findOneByEmail(createUserDto.email);
@@ -34,6 +40,7 @@ export class UsersService {
     }
     const password = encodePassword(createUserDto.password);
     const newUser = this.userRepository.create({ ...createUserDto, password });
+    await this.sendUserConfirmation(newUser);
     return this.userRepository.save(newUser);
   }
 
